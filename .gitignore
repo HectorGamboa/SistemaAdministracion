@@ -1,0 +1,29 @@
+# Archivos binarios y generados por .NET
+bin/
+obj/
+
+# Archivos de configuración de Visual Studio
+.vs/
+.vscode/
+.idea/
+
+# Archivos de configuración de Rider
+.idea/
+
+# Archivos de usuario de Visual Studio
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Archivos de paquetes NuGet
+*.nupkg
+# Otras carpetas de NuGet
+.nuget/
+
+# Archivos temporales de Windows
+Thumbs.db
+Desktop.ini
+
+# Archivos de depuración y compilación
+*.log
