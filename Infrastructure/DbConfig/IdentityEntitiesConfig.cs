@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,11 +10,32 @@ namespace Infrastructure.DbConfig
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             builder.ToTable("Users",SchemaNames.Security);
-            builder.Property(p => p.CreatedOnDate).HasDefaultValue(DateTime.UtcNow);
-            builder.Property(p => p.UpdatedOnDate).HasDefaultValue(DateTime.UtcNow);
-            builder.Property(p => p.DeletedOnDate).HasDefaultValue(DateTime.UtcNow);
-            builder.Property(p => p.IsDeleted).HasDefaultValue(false);
-            builder.Property(p => p.IsActive).HasDefaultValue(true);
         }
     }
+
+    public class ApplicationRoleConfig : IEntityTypeConfiguration<ApplicationRole>
+    {
+        public void Configure(EntityTypeBuilder<ApplicationRole> builder)
+        {
+            builder.ToTable("Roles", SchemaNames.Security);
+        }
+    }
+
+    public class ApplicationRoleClaimConfig : IEntityTypeConfiguration<ApplicationRoleClaim>
+    {
+        public void Configure(EntityTypeBuilder<ApplicationRoleClaim> builder)
+        {
+            builder.ToTable("RoleClaims", SchemaNames.Security);
+        }
+    }
+
+    public class ApplicationUserRoleConfig : IEntityTypeConfiguration<IdentityUserRole<string>>
+    {
+        public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)
+        {
+            builder.ToTable("UserRoles", SchemaNames.Security);
+        }
+    }
+    
+
 }
