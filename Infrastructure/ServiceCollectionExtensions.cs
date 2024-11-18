@@ -11,8 +11,8 @@ namespace Infrastructure
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection"))
-             );
+                    configuration.GetConnectionString("DefaultConnection")))
+                .AddTransient<ApplicationDBSeeder>();
             return services;
         }
     }
