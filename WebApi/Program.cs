@@ -3,6 +3,9 @@ using WebApi;
 using Application;
 using WebApi.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Add services to the container.
 builder.Services.AddCors(o =>
     o.AddPolicy("Itsoft", builder =>
     {
@@ -10,9 +13,6 @@ builder.Services.AddCors(o =>
         .AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     }
  ));
-
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
