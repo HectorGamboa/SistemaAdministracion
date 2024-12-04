@@ -3,6 +3,6 @@
     public static class AppCredentials
     {
         public const string Password = "12345678";
-        public const string Email = "admin@email.com";
+        public const string Email = "admin@itsoft.com";
     }
 }

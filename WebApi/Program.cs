@@ -1,7 +1,16 @@
 using Infrastructure;
 using WebApi;
-using Application;  
+using Application;
+using WebApi.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(o =>
+    o.AddPolicy("Itsoft", builder =>
+    {
+        builder
+        .AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    }
+ ));
+
 
 // Add services to the container.
 
@@ -16,7 +25,7 @@ builder.Services.AddInfrastructureDependencies();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.RegisterSwagger();
 var app = builder.Build();
-app.SeedDatabase();
+//app.SeedDatabase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -26,7 +35,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("Itsoft");
 app.UseAuthorization();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 

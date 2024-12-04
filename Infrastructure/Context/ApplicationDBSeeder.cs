@@ -83,7 +83,7 @@ namespace Infrastructure.Context
                 IsActive = true
             };
 
-            if (!await _userManager.Users.AnyAsync(u => u.Email == "johnd@abc.com"))
+            if (!await _userManager.Users.AnyAsync(u => u.Email == "jestrella@itsoft.com"))
             {
                 var password = new PasswordHasher<ApplicationUser>();
                 basicUser.PasswordHash = password.HashPassword(basicUser, AppCredentials.Password);

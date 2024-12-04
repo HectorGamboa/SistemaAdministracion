@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Common.Responses.Identity;
-using Infrastructure.Models;
+//using Infrastructure.Models;
 
 namespace Application
 {
@@ -8,9 +8,9 @@ namespace Application
     {
         public MappingProfiles()
         {
-            CreateMap<ApplicationUser, UserResponse>();
-            CreateMap<ApplicationRole, RoleResponse>();
-            CreateMap<ApplicationRoleClaim, RoleClaimViewModel>().ReverseMap();
+            //CreateMap<ApplicationUser, UserResponse>();
+            //CreateMap<ApplicationRole, RoleResponse>();
+            //CreateMap<ApplicationRoleClaim, RoleClaimViewModel>().ReverseMap();
         }
     }
 }
