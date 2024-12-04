@@ -1,5 +1,6 @@
 using Infrastructure;
 using WebApi;
+using Application;  
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,10 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddIdentitySettings();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddApplicationServices();
+builder.Services.AddJwtAuthentication(builder.Services.GetApplicationSettings(builder.Configuration));
+builder.Services.AddIdentityServices();
+builder.Services.AddInfrastructureDependencies();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.RegisterSwagger();
 var app = builder.Build();
 app.SeedDatabase();
 
@@ -24,6 +28,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.MapControllers();
 

@@ -35,7 +35,7 @@ namespace Infrastructure.Services.Identity
 
         public async Task<IResponseWrapper> CreateRoleAsync(CreateRoleRequest request)
         {
-            var roleExist = await _roleManager.FindByNameAsync(request.RoleName);
+            var roleExist = await _roleManager.FindByNameAsync(request.RoleName!);
             if (roleExist is not null)
             {
                 return await ResponseWrapper<string>.FailAsync("Role already exists");
@@ -82,7 +82,7 @@ namespace Infrastructure.Services.Identity
 
         public async Task<IResponseWrapper> UpdateRoleAsync(UpdateRoleRequest request)
         {
-            var roleInDb = await _roleManager.FindByIdAsync(request.RoleId);
+            var roleInDb = await _roleManager.FindByIdAsync(request.RoleId!);
             if (roleInDb is not null)
             {
                 if (roleInDb.Name != AppRoles.Admin)
@@ -115,7 +115,7 @@ namespace Infrastructure.Services.Identity
                     var allUsers = await _userManager.Users.ToListAsync();
                     foreach (var user in allUsers)
                     {
-                        if (await _userManager.IsInRoleAsync(user, roleInDb.Name))
+                        if (await _userManager.IsInRoleAsync(user, roleInDb.Name!))
                         {
                             return await ResponseWrapper
                                 .FailAsync($"Role: {roleInDb.Name} is currently assigned to a user.");
@@ -218,7 +218,7 @@ namespace Infrastructure.Services.Identity
 
         public async Task<IResponseWrapper> UpdateRolePermissionsAsync(UpdateRolePermissionsRequest request)
         {
-            var roleInDb = await _roleManager.FindByIdAsync(request.RoleId);
+            var roleInDb = await _roleManager.FindByIdAsync(request.RoleId!);
             if (roleInDb is not null)
             {
                 if (roleInDb.Name == AppRoles.Admin)
@@ -226,7 +226,7 @@ namespace Infrastructure.Services.Identity
                     return await ResponseWrapper<string>.FailAsync("Cannot change permissions for this role.");
                 }
 
-                var permissionsToBeAssigned = request.RoleClaims
+                var permissionsToBeAssigned = request.RoleClaims!
                     .Where(rc => rc.IsAssignedToRole == true)
                     .ToList();
 

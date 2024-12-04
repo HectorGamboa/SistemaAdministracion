@@ -9,7 +9,7 @@ namespace Infrastructure.Services.Identity
         public CurrentUserService(IHttpContextAccessor httpContextAccessor) 
         {
             UserId = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)
-                .Value;
+                .Value!;
         }
         public string UserId { get; }
     }

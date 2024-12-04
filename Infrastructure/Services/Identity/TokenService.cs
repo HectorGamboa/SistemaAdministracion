@@ -32,7 +32,7 @@ namespace Infrastructure.Services.Identity
         public async Task<ResponseWrapper<TokenResponse>> GetTokenAsync(TokenRequest tokenRequest)
         {
             // Validate user
-            var user = await _userManager.FindByEmailAsync(tokenRequest.Email);
+            var user = await _userManager.FindByEmailAsync(tokenRequest.Email!);
             // Check user
             if (user is null)
             {
@@ -50,7 +50,7 @@ namespace Infrastructure.Services.Identity
                 return await ResponseWrapper<TokenResponse>.FailAsync("Email not confirmed.");
             }
             // Check password
-            var isPaswordValid = await _userManager.CheckPasswordAsync(user, tokenRequest.Password);
+            var isPaswordValid = await _userManager.CheckPasswordAsync(user, tokenRequest.Password!);
             if (!isPaswordValid)
             {
                 return await ResponseWrapper<TokenResponse>.FailAsync("Invalid Credentials.");
@@ -81,9 +81,9 @@ namespace Infrastructure.Services.Identity
             {
                 return await ResponseWrapper<TokenResponse>.FailAsync("Invalid Client Token.");
             }
-            var userPrincipal = GetPrincipalFromExpiredToken(refreshTokenRequest.Token);
+            var userPrincipal = GetPrincipalFromExpiredToken(refreshTokenRequest.Token!);
             var userEmail = userPrincipal.FindFirstValue(ClaimTypes.Email);
-            var user = await _userManager.FindByEmailAsync(userEmail);
+            var user = await _userManager.FindByEmailAsync(userEmail!);
             
             if (user is null)
                 return await ResponseWrapper<TokenResponse>.FailAsync("User Not Found.");
@@ -131,7 +131,7 @@ namespace Infrastructure.Services.Identity
 
         private SigningCredentials GetSigningCredentials()
         {
-            var secret = Encoding.UTF8.GetBytes(_appConfiguration.Secret);
+            var secret = Encoding.UTF8.GetBytes(_appConfiguration.Secret!);
             return new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256);
         }
 
@@ -146,16 +146,16 @@ namespace Infrastructure.Services.Identity
             {
                 roleClaims.Add(new Claim(ClaimTypes.Role, role));
                 var currentRole = await _roleManager.FindByNameAsync(role);
-                var allPermissionsForCurrentRole = await _roleManager.GetClaimsAsync(currentRole);
+                var allPermissionsForCurrentRole = await _roleManager.GetClaimsAsync(currentRole!);
                 permissionClaims.AddRange(allPermissionsForCurrentRole);
             }
 
             var claims = new List<Claim>
             {
                 new (ClaimTypes.NameIdentifier, user.Id),
-                new(ClaimTypes.Email, user.Email),
-                new(ClaimTypes.Name, user.FirstName),
-                new(ClaimTypes.Surname, user.LastName),
+                new(ClaimTypes.Email, user.Email!),
+                new(ClaimTypes.Name, user.FirstName!),
+                new(ClaimTypes.Surname, user.LastName!),
                 new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
             }
             .Union(userClaims)
@@ -170,7 +170,7 @@ namespace Infrastructure.Services.Identity
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appConfiguration.Secret)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appConfiguration.Secret!)),
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 RoleClaimType = ClaimTypes.Role,

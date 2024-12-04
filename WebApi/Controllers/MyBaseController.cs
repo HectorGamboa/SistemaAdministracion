@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MediatR;
 
 namespace WebApi.Controllers
 {

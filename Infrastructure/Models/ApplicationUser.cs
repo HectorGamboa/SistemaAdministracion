@@ -12,9 +12,9 @@ namespace Infrastructure.Models
         public int UpdatedByUserId { get; set; }
         public DateTime DeletedOnDate { get; set; } = DateTime.UtcNow;
         public int DeletedByUserId { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryDate { get; set; }
         public bool IsDeleted { get; set; } = false;
         public bool IsActive { get; set; } = true;
-        public DateTime RefreshTokenExpiryDate { get; set; }
-
     }
 }

@@ -40,14 +40,14 @@ namespace Infrastructure.Services.Identity
 
         public async Task<IResponseWrapper> RegisterUserAsync(UserRegistrationRequest request)
         {
-            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
+            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email!);
 
             if (userWithSameEmail is not null)
             {
                 return await ResponseWrapper.FailAsync("Email already taken.");
             }
 
-            var userWithSameUsername = await _userManager.FindByNameAsync(request.UserName);
+            var userWithSameUsername = await _userManager.FindByNameAsync(request.UserName!);
 
             if (userWithSameUsername is not null)
             {
@@ -61,13 +61,13 @@ namespace Infrastructure.Services.Identity
                 Email = request.Email,
                 UserName = request.UserName,
                 PhoneNumber = request.PhoneNumber,
-                IsActive = request.ActivateUser,
+                IsActive =request.ActivateUser,
                 EmailConfirmed = request.AutoComfirmEmail,
             };
 
             // Hash and store the Hash password
             var password = new PasswordHasher<ApplicationUser>();
-            newUser.PasswordHash = password.HashPassword(newUser, request.Password);
+            newUser.PasswordHash = password.HashPassword(newUser, request.Password!);
 
             var identityResult = await _userManager.CreateAsync(newUser);
 
@@ -97,7 +97,7 @@ namespace Infrastructure.Services.Identity
 
         public async Task<IResponseWrapper> UpdateUserAsync(UpdateUserRequest request)
         {
-            var userInDb = await _userManager.FindByIdAsync(request.UserId);
+            var userInDb = await _userManager.FindByIdAsync(request.UserId!);
             if (userInDb is not null)
             {
                 userInDb.FirstName = request.FirstName;
@@ -116,13 +116,13 @@ namespace Infrastructure.Services.Identity
 
         public async Task<IResponseWrapper> ChangeUserPasswordAsync(ChangePasswordRequest request)
         {
-            var userInDb = await _userManager.FindByIdAsync(request.UserId);
+            var userInDb = await _userManager.FindByIdAsync(request.UserId!);
             if (userInDb is not null)
             {
                 var identityResult = await _userManager.ChangePasswordAsync(
                     userInDb,
-                    request.CurrentPassword,
-                    request.NewPassword);
+                    request.CurrentPassword!,
+                    request.NewPassword!);
                 if (identityResult.Succeeded)
                 {
                     return await ResponseWrapper<string>.SuccessAsync("User password updated.");
@@ -134,7 +134,7 @@ namespace Infrastructure.Services.Identity
 
         public async Task<IResponseWrapper> ChangeUserStatusAsync(ChangeUserStatusRequest request)
         {
-            var userInDb = await _userManager.FindByIdAsync(request.UserId);
+            var userInDb = await _userManager.FindByIdAsync(request.UserId!);
             if (userInDb is not null)
             {
                 // Change status
@@ -179,7 +179,7 @@ namespace Infrastructure.Services.Identity
                         RoleDescription = role.Description
                     };
 
-                    if (await _userManager.IsInRoleAsync(userIdDb, role.Name))
+                    if (await _userManager.IsInRoleAsync(userIdDb, role.Name!))
                     {
                         // User is assigned this role.
                         userRoleVM.IsAssignedToUser = true;
@@ -199,7 +199,7 @@ namespace Infrastructure.Services.Identity
 
         public async Task<IResponseWrapper> UpdateUserRolesAsync(UpdateUserRolesRequest request)
         {
-            var userInDb = await _userManager.FindByIdAsync(request.UserId);
+            var userInDb = await _userManager.FindByIdAsync(request.UserId!);
             if (userInDb is not null)
             {
                 if (userInDb.Email == AppCredentials.Email)
@@ -207,7 +207,7 @@ namespace Infrastructure.Services.Identity
                     return await ResponseWrapper.FailAsync("User Roles update not permitted.");
                 }
                 var currentAssignedRoles = await _userManager.GetRolesAsync(userInDb);
-                var rolesToBeAssigned = request.Roles
+                var rolesToBeAssigned = request.Roles!
                     .Where(role => role.IsAssignedToUser == true)
                     .ToList();
 
@@ -223,7 +223,7 @@ namespace Infrastructure.Services.Identity
                     if (identityResult1.Succeeded)
                     {
                         var identityResult2 = await _userManager
-                            .AddToRolesAsync(userInDb, rolesToBeAssigned.Select(role => role.RoleName));
+                            .AddToRolesAsync(userInDb, rolesToBeAssigned.Select(role => role.RoleName!));
                         if (identityResult2.Succeeded)
                         {
                             return await ResponseWrapper<string>.SuccessAsync("User Roles Updated Successfully.");

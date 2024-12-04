@@ -72,14 +72,14 @@ namespace Infrastructure.Context
         {
             var basicUser = new ApplicationUser
             {
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "johnd@abc.com",
-                UserName = "johnd",
+                FirstName = "joel",
+                LastName = "estrella",
+                Email = "jestrella@itsoft.com",
+                UserName = "jestrella",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
-                NormalizedEmail = "JOHND@ABC.COM",
-                NormalizedUserName = "JOHND",
+                NormalizedEmail = "JESTRELA@ITSOFT.COM",
+                NormalizedUserName = "JOEL",
                 IsActive = true
             };
 
