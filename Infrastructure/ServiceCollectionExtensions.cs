@@ -27,7 +27,7 @@ namespace Infrastructure
                 .AddTransient<ITokenService, TokenService>()
                 .AddTransient<IUserService, UserService>()
                 .AddTransient<IRoleService, RoleService>()
-                //.AddHttpContextAccessor()
+                .AddHttpContextAccessor()
                 .AddScoped<ICurrentUserService, CurrentUserService>();
 
             return services;

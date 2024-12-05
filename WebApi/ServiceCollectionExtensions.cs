@@ -4,7 +4,6 @@ using Common.Responses.Wrappers;
 using Infrastructure.Context;
 using Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;

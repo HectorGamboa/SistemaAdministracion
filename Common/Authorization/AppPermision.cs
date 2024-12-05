@@ -17,7 +17,7 @@ namespace Common.Authorization
     {
         private static readonly AppPermission[] _all = new AppPermission[]
         {
-            new(AppFeature.Users, AppAction.Create, AppRoleGroup.SystemAccess, "Create Users"),
+           new(AppFeature.Users, AppAction.Create, AppRoleGroup.SystemAccess, "Create Users"),
             new(AppFeature.Users, AppAction.Update, AppRoleGroup.SystemAccess, "Update Users"),
             new(AppFeature.Users, AppAction.Read, AppRoleGroup.SystemAccess, "Read Users"),
             new(AppFeature.Users, AppAction.Delete, AppRoleGroup.SystemAccess, "Delete Users"),
