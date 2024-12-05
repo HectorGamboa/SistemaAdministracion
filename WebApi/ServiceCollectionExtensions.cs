@@ -4,6 +4,8 @@ using Common.Responses.Wrappers;
 using Infrastructure.Context;
 using Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -11,6 +13,7 @@ using System.Net;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using WebApi.Permissions;
 
 namespace WebApi
 {
@@ -29,10 +32,11 @@ namespace WebApi
             return app;
         }
 
-
         internal static IServiceCollection AddIdentitySettings(this IServiceCollection services)
         {
             services
+                .AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>()
+                .AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>()
                 .AddIdentity<ApplicationUser, ApplicationRole>(options =>
                 {
                     options.Password.RequiredLength = 6;
@@ -42,7 +46,8 @@ namespace WebApi
                     options.Password.RequireUppercase = false;
                     options.User.RequireUniqueEmail = true;
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
             return services;
         }
 
@@ -175,6 +180,5 @@ namespace WebApi
                 });
             });
         }
-
     }
 }
